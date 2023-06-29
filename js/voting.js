@@ -43,7 +43,7 @@ function handleImageClick(event) {
       votingRounds--;
       renderProductImages();
     }
-
+  
     if (votingRounds === 0) {
       imgContainer.removeEventListener('click', handleImageClick);
       state.saveToLocalStorage();

@@ -10,7 +10,38 @@ let canvasElem = document.getElementById('chart')
  * - Call chart.js with the configuration and the canvasElem
  *
  */
+
+
+
 function renderChart() {
+ const labels = appState.allProducts.map(product => product.name);
+ const data = appState.allProducts.map(product => product.timesClicked)
+
+ const chartData = {
+    labels: labels,
+    datasets: [{
+        label: 'Number of Votes',
+        data: data,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+    }]
+ };
+
+ const config = {
+    type: 'bar',
+    data: chartData,
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+ };
+
+ new Chart(canvasElem, config);
+
 }
 
 renderChart();

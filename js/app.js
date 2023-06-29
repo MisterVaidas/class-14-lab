@@ -16,24 +16,43 @@ AppState.prototype.instantiateProducts = function () {
     }
   }
 
-}
+};
 
 AppState.prototype.saveToLocalStorage = function () {
   // TODO: Fill in this instance method to save product data to local storage
-}
+  const productsToSave = this.allProducts.map(product => {
+    return {
+      name: product.name,
+      fileExtension: product.source.split('.').pop(),
+      timesClicked: product.timesClicked,
+      timesShown: product.timesShown
+    };
+  });
+
+    const productsString = JSON.stringify(productsToSave);
+    localStorage.setItem('products', productsString);
+};
 
 AppState.prototype.loadItems = function () {
 
   // TODO: Update this instance method to retrieve data from local storage instead of creating new Products on each page load
-
-  this.instantiateProducts();
-
+  const productsString = localStorage.getItem('products');
+  if(productsString) {
+    const productsData = JSON.parse(productsString);
+    this.allProducts = productsData.map(product => new Product(product.name, product.fileExtension, product.timesClicked, product.timesShown));
+  } else {
+    this.instantiateProducts();
+  }
 }
 
 
-function Product(name, fileExtension = 'jpg') {
+function Product(name, fileExtension = 'jpg', timesClicked = 0, timesShown = 0) {
   this.name = name;
   this.source = `assets/${name}.${fileExtension}`;
-  this.timesClicked = 0;
-  this.timesShown = 0;
+  this.timesClicked = timesClicked;
+  this.timesShown = timesShown;
 }
+
+const appState = new AppState();
+appState.loadItems();
+
